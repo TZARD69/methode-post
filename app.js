@@ -3,19 +3,28 @@ const express = require("express");
 const app = express();
 const port = process.env.APP_PORT;
 
-const usersHandlers = require("./usersHandlers");
-
 const welcome = (req, res) => {
   res.send("Welcome to my favourite users list");
 };
 
- app.get("/", welcome);
+app.get("/", welcome);
 
- app.use(express.json());
- app.post("/api/users", usersHandlers.postUser);
+app.use(express.json());
 
- app.get("/api/users", usersHandlers.getUsers);
+const movieHandlers = require("./moviesHandlers");
+
+app.get("/api/movies", movieHandlers.getMovies);
+app.get("/api/movies/:id", movieHandlers.getMovieById);
+app.put("/api/movies/:id", movieHandlers.updateMovie);
+app.post("/api/movies", movieHandlers.postMovie);
+
+const usersHandlers = require("./usersHandlers");
+
+
+app.get("/api/users", usersHandlers.getUsers);
 app.get("/api/users/:id", usersHandlers.getUsersById);
+app.put("/api/users/:id", usersHandlers.updateUsers);
+app.post("/api/users", usersHandlers.postUser);
 
 app.listen(port, (err) => {
   if (err) {
